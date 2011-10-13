@@ -113,10 +113,10 @@ module ActiveMerchant #:nodoc:
         commit('subscriber_void', money, post)
       end
 
-      def credit(money, identification, options = {})
+      def credit(money, creditcard, options = {})
         post = {}
         add_invoice(post, options)
-        add_reference(post, identification)
+        add_creditcard(post, creditcard, options)
         add_user_reference(post, options)
         commit('subscriber_credit', money, post)
       end
@@ -157,11 +157,11 @@ module ActiveMerchant #:nodoc:
         post[:dateval] = expdate(creditcard)
         post[:cvv] = creditcard.verification_value if creditcard.verification_value?
       end
-      
+
       def add_user_reference(post, options)
         post[:refabonne] = options[:user_reference]
       end
-      
+
       def add_reference(post, identification)
         post[:numappel] = identification[0,10]
         post[:numtrans] = identification[10,10]
